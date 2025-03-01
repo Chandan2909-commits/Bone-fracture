@@ -10,7 +10,7 @@ st.set_page_config(page_title="Bone Fracture Detector", page_icon="🦴", layout
 @st.cache_resource
 def load_model():
     try:
-        model = tf.keras.models.load_model("bone_fracture mk1.h5")  # Update to your model filename
+        model = tf.keras.models.load_model("bone_fracture_detector.tflite")
         return model
     except Exception as e:
         st.error(f"⚠️ Error loading model: {e}")
@@ -20,7 +20,7 @@ model = load_model()
 
 # Function to preprocess image
 def preprocess_image(image):
-    image = image.convert("RGB")  # Ensure RGB format
+    image = image.convert("RGB") 
     image = image.resize((150, 150))  # Resize to match model training
     image = np.array(image, dtype=np.float32) / 255.0  # Normalize (0-1 scale)
     image = np.expand_dims(image, axis=0)  # Add batch dimension
