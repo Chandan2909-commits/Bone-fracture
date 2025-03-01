@@ -10,7 +10,7 @@ st.set_page_config(page_title="Bone Fracture Detector", page_icon="🦴", layout
 @st.cache_resource
 def load_tflite_model():
     try:
-        interpreter = tf.lite.Interpreter(model_path="bone_fracture_detector.tflite")  # Update with correct model filename
+        interpreter = tf.lite.Interpreter(model_path="bone_fracture_mk1.tflite")  # Update with correct model filename
         interpreter.allocate_tensors()
         return interpreter
     except Exception as e:
