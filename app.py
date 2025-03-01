@@ -1,17 +1,16 @@
-%%writefile app.py
 import streamlit as st
-import numpy as np
 import tensorflow as tf
+import numpy as np
 from PIL import Image
 
-# ✅ Set Streamlit Page Configuration
+# ✅ Set page config at the very top
 st.set_page_config(page_title="Bone Fracture Detector", page_icon="🦴", layout="wide")
 
 # ✅ Load TensorFlow Lite Model
 @st.cache_resource
 def load_tflite_model():
     try:
-        interpreter = tf.lite.Interpreter(model_path="bone_fracture_detector.tflite")
+        interpreter = tf.lite.Interpreter(model_path="bone_fracture_mk1.tflite")  # Update with correct model filename
         interpreter.allocate_tensors()
         return interpreter
     except Exception as e:
@@ -37,7 +36,7 @@ def predict_tflite(interpreter, image):
     interpreter.invoke()
     
     prediction = interpreter.get_tensor(output_details[0]['index'])
-    return prediction[0][0]  # Extract confidence score
+    return float(prediction[0][0])  # Extract confidence score
 
 # ✅ Streamlit UI
 st.markdown("""
@@ -62,7 +61,10 @@ if uploaded_file is not None:
                 # ✅ Process the image
                 processed_image = preprocess_image(image)
 
-                # ✅ Make prediction
+                # ✅ Debugging: Check input shape
+                st.write(f"Processed Image Shape: {processed_image.shape}")  
+
+                # ✅ Make prediction using TensorFlow Lite
                 confidence = predict_tflite(interpreter, processed_image)
 
                 # ✅ Define class labels
